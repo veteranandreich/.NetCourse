@@ -1,0 +1,6 @@
+C:\Users\mamuH\source\repos\Lab01\Lab01\bin\Debug\Lab01.exe.config
+C:\Users\mamuH\source\repos\Lab01\Lab01\bin\Debug\Lab01.exe
+C:\Users\mamuH\source\repos\Lab01\Lab01\bin\Debug\Lab01.pdb
+C:\Users\mamuH\source\repos\Lab01\Lab01\obj\Debug\Lab01.exe
+C:\Users\mamuH\source\repos\Lab01\Lab01\obj\Debug\Lab01.pdb
+C:\Users\mamuH\source\repos\Lab01\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache

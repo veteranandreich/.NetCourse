@@ -1,0 +1,1 @@
+Console app for managing your phonebook notes
