@@ -21,8 +21,7 @@ namespace Lab01
         public string Marks { get; private set; }
         public Note(Dictionary<string, string> fields)
         {
-            Note.amount += 1;
-            this.Id = Note.amount;
+            this.Id = ++Note.amount;
             this.Surname = fields["Surname"];
             this.Name = fields["Name"];
             this.MiddleName = fields["MiddleName"];
@@ -32,6 +31,19 @@ namespace Lab01
             this.Organisation = fields["Organisation"];
             this.Position = fields["Position"];
             this.Marks = fields["Marks"];
+        }
+
+        public void Edit(Dictionary<string, string> data)
+        {
+            if (data["Surname"] != "NS") this.Surname = data["Surname"];
+            if (data["Name"] != "NS") this.Name = data["Name"];
+            if(data["MiddleName"] != "NS") this.MiddleName = data["MiddleName"];
+            if(data["PhoneNumber"] != "NS") this.PhoneNumber = data["PhoneNumber"];
+            if(data["Country"] != "NS") this.Country = data["Country"];
+            if (data["DateOfBirth"] != "NS") this.Dob = data["DateOfBirth"];
+            if (data["Organisation"] != "NS") this.Organisation = data["Organisation"];
+            if (data["Position"] != "NS") this.Position = data["Position"];
+            if (data["Marks"] != "NS") this.Marks = data["Marks"];
         }
 
         public override string ToString()

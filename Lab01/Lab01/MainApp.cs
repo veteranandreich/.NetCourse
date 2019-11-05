@@ -16,16 +16,23 @@ namespace Lab01
                 string hello_answer = Console.ReadLine();
                 if (hello_answer == "y")
                 {
-                    Console.WriteLine("What do you want [new/delete/update/show/glance]");
+                    Console.WriteLine("What do you want [new/delete/edit/show/glance]");
                     string wtd_decision = Console.ReadLine();
                     if (wtd_decision == "new")
                     {
                         Console.WriteLine("Give me information by the following format. All blank fields will be filled with NS(NotStated) expression");
                         Console.WriteLine("Name: *name*, MiddleName: *middle name*, Surname: *surname*, PhoneNumber: *phone number*, " +
                                 "Country: *country*, DateOfBirth: *date of birth*, Organisation: *organisation*, Position: *position*, Marks: *marks*");
+                        Console.WriteLine("Remember, note must have \"Name\", \"Surname\", \"PhoneNumber\" and \"Country\" fields, otherwise note won't be added");
                         string raw_info = Console.ReadLine();
-                        Dictionary<string, string> info = new Dictionary<string, string>();
-                        PhoneBook.book.Add(new Note(Parser.Parse(raw_info)));
+                        Dictionary<string, string> ParsedInfo = Parser.Parse(raw_info);
+                        if ((ParsedInfo["Surname"] != "NS") && (ParsedInfo["Name"] != "NS") && (ParsedInfo["PhoneNumber"] != "NS") && (ParsedInfo["Country"] != "NS"))
+                        {
+                            PhoneBook.book.Add(new Note(ParsedInfo));
+                            Console.WriteLine("Done!");
+                        }
+                        else Console.WriteLine("Not all necessary fields added or format violation! Try again and be assured that \"Name\", " +
+                            "\"Surname\", \"PhoneNumber\" and \"Country\" fields are filled and format is followed");
                     }
                     if (wtd_decision == "delete")
                     {
@@ -34,9 +41,16 @@ namespace Lab01
                         PhoneBook.Delete(id);
                         Console.WriteLine("Done!");
                     }
-                    if (wtd_decision == "update")
+                    if (wtd_decision == "edit")
                     {
-
+                        Console.WriteLine("OK, which note do you want to edit? [ID]");
+                        int id = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Give me information by the following format. All blank fields will be filled with NS(NotStated) expression");
+                        Console.WriteLine("Name: *name*, MiddleName: *middle name*, Surname: *surname*, PhoneNumber: *phone number*, " +
+                                "Country: *country*, DateOfBirth: *date of birth*, Organisation: *organisation*, Position: *position*, Marks: *marks*");
+                        string raw_info = Console.ReadLine();
+                        PhoneBook.Edit(id, Parser.Parse(raw_info));
+                        Console.WriteLine("Done!");
                     }
                     if (wtd_decision == "show")
                     {

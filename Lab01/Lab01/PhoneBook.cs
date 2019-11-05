@@ -27,14 +27,26 @@ namespace Lab01
 
         public static void Delete(int id)
         {
+            Note note = Find(id);
+            if (note != null) book.Remove(note);
+        }
+
+        public static void Edit(int id, Dictionary <string, string> data)
+        {
+            Note note = Find(id);
+            if (note != null) note.Edit(data);
+        }
+
+        public static Note Find(int id)
+        {
             foreach (Note elem in book)
             {
                 if (elem.Id == id)
                 {
-                    book.Remove(elem);
-                    break;
+                    return elem;
                 }
             }
+            return null;
         }
     }
 }
