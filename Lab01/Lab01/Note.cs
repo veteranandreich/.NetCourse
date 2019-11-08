@@ -13,7 +13,7 @@ namespace Lab01
         public string Surname { get; private set; }
         public string Name { get; private set; }
         public string MiddleName { get; private set; }
-        public string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; private set; } // PhoneNumber is a string and it's not a mistake. For example, in the US it's common to use letters, like "1-800-MY-APPLE" etc.
         public string Country { get; private set; }
         public string Dob { get; private set; }
         public string Organisation { get; private set; }

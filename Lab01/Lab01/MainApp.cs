@@ -16,7 +16,7 @@ namespace Lab01
                 string hello_answer = Console.ReadLine();
                 if (hello_answer == "y")
                 {
-                    Console.WriteLine("What do you want [new/delete/edit/show/glance]");
+                    Console.WriteLine("What do you want [new/delete/edit/show/glance]?");
                     string wtd_decision = Console.ReadLine();
                     if (wtd_decision == "new")
                     {
@@ -37,20 +37,34 @@ namespace Lab01
                     if (wtd_decision == "delete")
                     {
                         Console.WriteLine("OK, which note do you want to delete? [ID]");
-                        int id = int.Parse(Console.ReadLine());
-                        PhoneBook.Delete(id);
-                        Console.WriteLine("Done!");
+                        int id;
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            PhoneBook.Delete(id);
+                            Console.WriteLine("Done!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("ID should be integer");
+                        }
                     }
                     if (wtd_decision == "edit")
                     {
                         Console.WriteLine("OK, which note do you want to edit? [ID]");
-                        int id = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Give me information by the following format. All blank fields will be filled with NS(NotStated) expression");
-                        Console.WriteLine("Name: *name*, MiddleName: *middle name*, Surname: *surname*, PhoneNumber: *phone number*, " +
-                                "Country: *country*, DateOfBirth: *date of birth*, Organisation: *organisation*, Position: *position*, Marks: *marks*");
-                        string raw_info = Console.ReadLine();
-                        PhoneBook.Edit(id, Parser.Parse(raw_info));
-                        Console.WriteLine("Done!");
+                        int id;
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            Console.WriteLine("Give me information by the following format. All blank fields will be filled with NS(NotStated) expression");
+                            Console.WriteLine("Name: *name*, MiddleName: *middle name*, Surname: *surname*, PhoneNumber: *phone number*, " +
+                                    "Country: *country*, DateOfBirth: *date of birth*, Organisation: *organisation*, Position: *position*, Marks: *marks*");
+                            string raw_info = Console.ReadLine();
+                            PhoneBook.Edit(id, Parser.Parse(raw_info));
+                            Console.WriteLine("Done!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("ID should be integer");
+                        }
                     }
                     if (wtd_decision == "show")
                     {
