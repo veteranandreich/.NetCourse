@@ -20,15 +20,13 @@ namespace Lab02
         }
         public string GetElement (int row, int column)
         {
-            if (ws.Cells[row, column].value != "")
-            {
-                return ws.Cells[row, column].value;
-            }
-            return "";
+            return Convert.ToString(ws.Cells[row, column].value);
         }
         public void Close()
         {
             wb.Close();
+            excel.Quit();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
         }
     }
 }

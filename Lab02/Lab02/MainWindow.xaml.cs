@@ -20,6 +20,8 @@ namespace Lab02
     
     public partial class MainWindow : Window
     {
+        private WebClient wc = new WebClient();
+        private ExcelFile excelfile;
         public MainWindow()
         {
             InitializeComponent();
@@ -27,12 +29,10 @@ namespace Lab02
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            WebClient wc = new WebClient();
-            MessageBox.Show($"{System.IO.Directory.GetCurrentDirectory()}");
             try
             {
                 wc.DownloadFile(new Uri(Properties.Settings.Default.Link), "file.xlsx");
-                MessageBox.Show("Загрузка завершена");
+                MessageBox.Show($"Загрузка завершена, количество обновленных записей {CountUpdates()}"); //cсделать кнопку отчет
             }
             catch (WebException exc)
             {
@@ -40,12 +40,43 @@ namespace Lab02
             }
         }
 
+        private int CountUpdates()
+        {
+            try
+            {
+                excelfile = new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1);
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                MessageBox.Show("У вас нет таблицы УБИ");
+            }
+            int row = 3;
+            const int column = 10;
+            int counter = 0;
+            DateTime LastUpdate = new DateTime();
+            while(excelfile.GetElement(row, column) != null)
+            {
+                DateTime date = DateTime.Parse(excelfile.GetElement(row, column));
+                if (date > Properties.Settings.Default.LastUpdate)
+                {
+                    counter++;
+                    if (date > LastUpdate) LastUpdate = date;
+                }
+                row++;
+            }
+            if (LastUpdate != DateTime.MinValue)
+            {
+                Properties.Settings.Default.LastUpdate = LastUpdate;
+                Properties.Settings.Default.Save();
+            }
+            excelfile.Close();
+            return counter;
+        }
+
         private void GetButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MessageBox.Show($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx");
-                ExcelFile excelfile = new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1);
                 MessageBox.Show(excelfile.GetElement(2, 1));
             }
             catch (System.Runtime.InteropServices.COMException)

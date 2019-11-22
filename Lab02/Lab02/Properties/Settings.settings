@@ -5,5 +5,8 @@
     <Setting Name="Link" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://bdu.fstec.ru/documents/files/thrlist.xlsx</Value>
     </Setting>
+    <Setting Name="LastUpdate" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
