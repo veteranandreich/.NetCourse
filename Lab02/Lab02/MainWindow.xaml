@@ -1,0 +1,18 @@
+﻿<Window x:Class="Lab02.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab02"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="UpdateButton" Content="Update" HorizontalAlignment="Left" Margin="40,0,0,30" VerticalAlignment="Bottom" Width="75" Click="UpdateButton_Click" Grid.ColumnSpan="2"/>
+        <Button x:Name="GetButton" Grid.ColumnSpan="2" Content="Get" HorizontalAlignment="Right" Margin="0,0,40,30" VerticalAlignment="Bottom" Width="75" Click="GetButton_Click"/>
+
+    </Grid>
+</Window>
