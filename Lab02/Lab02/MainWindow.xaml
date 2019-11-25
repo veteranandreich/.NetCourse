@@ -7,12 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="UpdateButton" Content="Update" HorizontalAlignment="Left" Margin="40,0,0,30" VerticalAlignment="Bottom" Width="75" Click="UpdateButton_Click" Grid.ColumnSpan="2"/>
-        <Button x:Name="GetButton" Grid.ColumnSpan="2" Content="Get" HorizontalAlignment="Right" Margin="0,0,40,30" VerticalAlignment="Bottom" Width="75" Click="GetButton_Click"/>
-
+        <DataGrid Margin="10,0,10,55" Name="InfoGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="УБИ.ID" Binding="{Binding Comment}"/>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="UpdateButton" Content="Обновить" HorizontalAlignment="Left" Margin="10,0,0,20" VerticalAlignment="Bottom" Width="75" Click="UpdateButton_Click" Grid.ColumnSpan="2"/>
+        <Button x:Name="NextButton" Content="Далее" HorizontalAlignment="Right" Margin="0,0,10,20" VerticalAlignment="Bottom" Width="75" Click="NextButton_Click" Grid.ColumnSpan="2"/>
+        <Button x:Name="PrevButton" Content="Назад" HorizontalAlignment="Right" Margin="0,0,100,20" VerticalAlignment="Bottom" Width="75" Click="PrevButton_Click" Grid.ColumnSpan="2"/>
     </Grid>
+
 </Window>
