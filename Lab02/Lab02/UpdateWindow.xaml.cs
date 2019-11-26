@@ -16,40 +16,38 @@ namespace Lab02
 {
     public partial class Window1 : Window
     {
-        public Window1()
+        private List<Record> PrevList = null;
+        public Window1(List<Record> PrevList)
         {
             InitializeComponent();
+            this.PrevList = PrevList;
             CompareFiles();
         }
-
-        public bool IsTrue(string s)
-        {
-            return (s == "1");
-        }
-
+        
         private void CompareFiles()
         {
             MessageBox.Show("Обращаем внимание, что генерация отчета может занять некоторое время");
-            var excelFile = new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1);
             var NewExcelFile = new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\temp.xlsx", 1);
-            int i = 3;
-            while(excelFile.GetElement(i,1) != null) 
+            int j = 0;
+            for(j = 0; j<PrevList.Count(); j++)
             {
-                if (excelFile.GetElement(i, 10) != NewExcelFile.GetElement(i, 10))
+                if (PrevList[j].LastUpdateTime != DateTime.Parse(NewExcelFile.GetElement(j + 3, 10)))
                 {
-                    var r1 = new Record("Old", Int32.Parse(excelFile.GetElement(i, 1)), excelFile.GetElement(i, 2), excelFile.GetElement(i, 3), excelFile.GetElement(i, 4),
-                        excelFile.GetElement(i, 5), excelFile.GetElement(i, 6) == "1", excelFile.GetElement(i, 7) == "1", excelFile.GetElement(i, 8) == "1",
-                        DateTime.Parse(excelFile.GetElement(i, 9)), DateTime.Parse(excelFile.GetElement(i, 10)));
-
-                    var r2 = new Record("New", Int32.Parse(NewExcelFile.GetElement(i, 1)), NewExcelFile.GetElement(i, 2), NewExcelFile.GetElement(i, 3), NewExcelFile.GetElement(i, 4),
-                        NewExcelFile.GetElement(i, 5), NewExcelFile.GetElement(i, 6) == "1", NewExcelFile.GetElement(i, 7) == "1", NewExcelFile.GetElement(i, 8) == "1",
-                        DateTime.Parse(NewExcelFile.GetElement(i, 9)), DateTime.Parse(NewExcelFile.GetElement(i, 10)));
-                    UpdateInfoGrid.Items.Add(r1);
+                    var r2 = new Record("New", Int32.Parse(NewExcelFile.GetElement(j+3, 1)), NewExcelFile.GetElement(j + 3, 2), NewExcelFile.GetElement(j + 3, 3), NewExcelFile.GetElement(j + 3, 4),
+                        NewExcelFile.GetElement(j + 3, 5), NewExcelFile.GetElement(j + 3, 6) == "1", NewExcelFile.GetElement(j + 3, 7) == "1", NewExcelFile.GetElement(j + 3, 8) == "1",
+                        DateTime.Parse(NewExcelFile.GetElement(j + 3, 9)), DateTime.Parse(NewExcelFile.GetElement(j + 3, 10)));
+                    PrevList[j].Comment = "Old";
+                    UpdateInfoGrid.Items.Add(PrevList[j]);
                     UpdateInfoGrid.Items.Add(r2);
                 }
-                i++;
             }
-            excelFile.Close();
+            while (NewExcelFile.GetElement(j + 3, 1) != null)
+            {
+                var r2 = new Record("New", Int32.Parse(NewExcelFile.GetElement(j + 3, 1)), NewExcelFile.GetElement(j + 3, 2), NewExcelFile.GetElement(j + 3, 3), NewExcelFile.GetElement(j + 3, 4),
+                        NewExcelFile.GetElement(j + 3, 5), NewExcelFile.GetElement(j + 3, 6) == "1", NewExcelFile.GetElement(j + 3, 7) == "1", NewExcelFile.GetElement(j + 3, 8) == "1",
+                        DateTime.Parse(NewExcelFile.GetElement(j + 3, 9)), DateTime.Parse(NewExcelFile.GetElement(j + 3, 10)));
+                UpdateInfoGrid.Items.Add(r2);
+            }
             NewExcelFile.Close();
         }
     }

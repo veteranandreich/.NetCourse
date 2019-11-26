@@ -103,7 +103,7 @@ namespace Lab02
 
         private void ShowUpdateWindow()
         {
-            Window1 UpdateWindow = new Window1();
+            Window1 UpdateWindow = new Window1(RecordList);
             UpdateWindow.Show();
         }
 

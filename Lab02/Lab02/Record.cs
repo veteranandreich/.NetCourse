@@ -27,7 +27,7 @@ namespace Lab02
             this.Comment = "УБИ." + Id;
             this.Name = Name;
         }
-        public string Comment { get; private set; }
+        public string Comment { get; set; }
         public int Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
