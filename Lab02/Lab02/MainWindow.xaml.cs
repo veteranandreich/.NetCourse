@@ -26,40 +26,60 @@ namespace Lab02
         public MainWindow()
         {
             InitializeComponent();
-            ShowDataGrid();
+            InitializeGrid();
         }
 
-        private void ShowDataGrid()
+        private void InitializeGrid()
         {
-            ExcelFile excelfile = null;
             try
             {
-                excelfile = new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1);
+                UpdateDataGrid(new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1));
             }
             catch (Exception)
             {
-                MessageBox.Show("У вас нет таблицы УБИ");
-                wc.DownloadFile(new Uri(Properties.Settings.Default.Link), "file.xlsx");
-                excelfile = new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1);
-            }
-            finally
-            {
-                int i = 3;
-                while (excelfile.GetElement(i, 1) != null)
+                MessageBox.Show("У вас нет таблицы УБИ. Пробую загрузить файл...");
+                try
                 {
-                    var r = new Record("УБИ." + Int32.Parse(excelfile.GetElement(i, 1)), Int32.Parse(excelfile.GetElement(i, 1)), excelfile.GetElement(i, 2), excelfile.GetElement(i, 3), excelfile.GetElement(i, 4),
-                        excelfile.GetElement(i, 5), excelfile.GetElement(i, 6) == "1", excelfile.GetElement(i, 7) == "1", excelfile.GetElement(i, 8) == "1",
-                        DateTime.Parse(excelfile.GetElement(i, 9)), DateTime.Parse(excelfile.GetElement(i, 10)));
-                    if (r.Id <= 15)
-                    {
-                        InfoGrid.Items.Add(r);
-                    }
-                    RecordList.Add(r);
-                    i++;
+                    wc.DownloadFile(new Uri(Properties.Settings.Default.Link), "file.xlsx");
+                    UpdateDataGrid(new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1));
                 }
-                LastInGrid = 15;
-                excelfile.Close();
+                catch (WebException ex)
+                {
+                    MessageBox.Show("Невозможно загрузить файл, проверьте доступ к интернету");
+                    throw ex;
+                }
             }
+        }
+
+        private int UpdateDataGrid(ExcelFile excelfile)
+        {
+            int i = 3;
+            int counter = 0;
+            DateTime LastUpdate = new DateTime();
+            InfoGrid.Items.Clear();
+            RecordList.Clear();
+            while (excelfile.GetElement(i, 1) != null)
+            {
+                var r = new Record("УБИ." + Int32.Parse(excelfile.GetElement(i, 1)), Int32.Parse(excelfile.GetElement(i, 1)), excelfile.GetElement(i, 2), excelfile.GetElement(i, 3), excelfile.GetElement(i, 4),
+                    excelfile.GetElement(i, 5), excelfile.GetElement(i, 6) == "1", excelfile.GetElement(i, 7) == "1", excelfile.GetElement(i, 8) == "1",
+                    DateTime.Parse(excelfile.GetElement(i, 9)), DateTime.Parse(excelfile.GetElement(i, 10)));
+                if (r.LastUpdateTime > Properties.Settings.Default.LastUpdate)
+                {
+                    counter++;
+                    if (r.LastUpdateTime > LastUpdate) LastUpdate = r.LastUpdateTime;
+                }
+                if (r.Id <= 15)
+                {
+                    InfoGrid.Items.Add(r);
+                }
+                RecordList.Add(r);
+                i++;
+            }
+            Properties.Settings.Default.LastUpdate = LastUpdate;
+            Properties.Settings.Default.Save();
+            LastInGrid = 15;
+            excelfile.Close();
+            return counter;
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
@@ -67,44 +87,18 @@ namespace Lab02
             try
             {
                 wc.DownloadFile(new Uri(Properties.Settings.Default.Link), "temp.xlsx");
-                var result = MessageBox.Show($"Загрузка завершена, количество обновленных записей {CountUpdates()}. Хотите получить подробный отчет?", "Информация об обновлении", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes) ShowUpdateWindow();
-                if (result == MessageBoxResult.No)
+                var result = MessageBox.Show($"Загрузка завершена, количество обновленных записей {UpdateDataGrid(new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\temp.xlsx", 1))}. Хотите получить подробный отчет?", "Информация об обновлении", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes) 
                 {
-                    System.IO.File.Delete("file.xlsx");
-                    System.IO.File.Move("temp.xlsx", "file.xlsx");
+                    ShowUpdateWindow();
                 }
+                System.IO.File.Delete("file.xlsx");
+                System.IO.File.Move("temp.xlsx", "file.xlsx");
             }
             catch (WebException exc)
             {
                 MessageBox.Show(exc.Message);
             }
-        }
-
-        private int CountUpdates()
-        {
-            var excelfile = new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\file.xlsx", 1);
-            int row = 3;
-            const int column = 10;
-            int counter = 0;
-            DateTime LastUpdate = new DateTime();
-            while(excelfile.GetElement(row, column) != null)
-            {
-                DateTime date = DateTime.Parse(excelfile.GetElement(row, column));
-                if (date > Properties.Settings.Default.LastUpdate)
-                {
-                    counter++;
-                    if (date > LastUpdate) LastUpdate = date;
-                }
-                row++;
-            }
-            if (LastUpdate != DateTime.MinValue)
-            {
-                Properties.Settings.Default.LastUpdate = LastUpdate;
-                Properties.Settings.Default.Save();
-            }
-            excelfile.Close();
-            return counter;
         }
 
         private void ShowUpdateWindow()
@@ -151,6 +145,37 @@ namespace Lab02
                 }
             }
             LastInGrid -= 15;
+        }
+
+        private void IdBox_Changed(object sender, TextChangedEventArgs e)
+        {
+            if (IdBox.Text == "")
+            {
+                InfoGrid.Items.Clear();
+                for (int i = 0; i <= 14; i++)
+                {
+                    InfoGrid.Items.Add(RecordList[i]);
+                }
+                LastInGrid = 15;
+            }
+            else
+            {
+                int value = 0;
+                if ((Int32.TryParse(IdBox.Text, out value)) && (value <= RecordList.Count) && (value > 0))
+                {
+                    InfoGrid.Items.Clear();
+                    InfoGrid.Items.Add(RecordList[value - 1]);
+                    LastInGrid = 15;
+                }
+            }
+        }
+        private void IsEnter(object sender, KeyEventArgs e)
+        {
+            int value = 0;
+            if ((e.Key == Key.Return) && (Int32.TryParse(IdBox.Text, out value)) && (value <= RecordList.Count) && (value > 0))
+            {
+                MessageBox.Show(RecordList[value - 1].ToString());
+            }
         }
     }
 }

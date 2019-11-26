@@ -23,15 +23,12 @@ namespace Lab02.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://bdu.fstec.ru/documents/files/thrlist.xlsx")]
         public string Link {
             get {
                 return ((string)(this["Link"]));
-            }
-            set {
-                this["Link"] = value;
             }
         }
         

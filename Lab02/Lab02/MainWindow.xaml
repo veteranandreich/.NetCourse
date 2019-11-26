@@ -16,6 +16,7 @@
         <Button x:Name="UpdateButton" Content="Обновить" HorizontalAlignment="Left" Margin="10,0,0,20" VerticalAlignment="Bottom" Width="75" Click="UpdateButton_Click" Grid.ColumnSpan="2"/>
         <Button x:Name="NextButton" Content="Далее" HorizontalAlignment="Right" Margin="0,0,10,20" VerticalAlignment="Bottom" Width="75" Click="NextButton_Click" Grid.ColumnSpan="2"/>
         <Button x:Name="PrevButton" Content="Назад" HorizontalAlignment="Right" Margin="0,0,100,20" VerticalAlignment="Bottom" Width="75" Click="PrevButton_Click" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="IdBox" HorizontalAlignment="Left" Height="20"  Margin="150,0,0,20" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Width="120" TextChanged="IdBox_Changed" KeyDown="IsEnter"/>
     </Grid>
 
 </Window>

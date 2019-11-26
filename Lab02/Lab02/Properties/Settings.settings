@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Lab02.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Link" Type="System.String" Scope="User">
+    <Setting Name="Link" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://bdu.fstec.ru/documents/files/thrlist.xlsx</Value>
     </Setting>
     <Setting Name="LastUpdate" Type="System.DateTime" Scope="User">

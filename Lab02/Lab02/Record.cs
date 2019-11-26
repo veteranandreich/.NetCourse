@@ -20,7 +20,7 @@ namespace Lab02
             this.IntegrityThreat = It;
             this.AccessThreat = At;
             this.IncludingTime = IncludingTime;
-            this.LastUpdateTime = LastUpdateTime;
+            this.LastUpdateTime = LastUpdateTime.Date;
         }
         public Record(int Id, string Name)
         {
@@ -38,5 +38,11 @@ namespace Lab02
         public bool AccessThreat { get; private set; }
         public DateTime IncludingTime { get; private set; }
         public DateTime LastUpdateTime { get; private set; }
+        public override string ToString()
+        {
+            return $"ID: {this.Id} \n Наименование: {this.Name} \n Описание: {this.Description} \n Источник угрозы: {this.Source} \n" +
+                $"Объект войздействия: {this.Object} \n Угроза конфиденциальности: {this.ConfidentialityThreat} \n Угроза целостности: {this.IntegrityThreat} \n" +
+                $"Угроза доступа: {this.AccessThreat} \n Время включения: {this.IncludingTime} \n Последнее обновление: {this.LastUpdateTime.Date.ToString("dd/MM/yyyy")}";
+        }
     }
 }

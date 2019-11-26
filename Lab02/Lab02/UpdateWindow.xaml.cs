@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace Lab02
 {
-    /// <summary>
-    /// Логика взаимодействия для Window1.xaml
-    /// </summary>
     public partial class Window1 : Window
     {
         public Window1()
@@ -54,8 +51,6 @@ namespace Lab02
             }
             excelFile.Close();
             NewExcelFile.Close();
-            System.IO.File.Delete("file.xlsx");
-            System.IO.File.Move("temp.xlsx", "file.xlsx");
         }
     }
 }
