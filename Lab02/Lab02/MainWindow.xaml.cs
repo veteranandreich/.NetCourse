@@ -13,11 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Lab02
 {
-    
+
     public partial class MainWindow : Window
     {
         private WebClient wc = new WebClient();
@@ -58,11 +57,11 @@ namespace Lab02
             DateTime LastUpdate = new DateTime();
             InfoGrid.Items.Clear();
             RecordList.Clear();
-            while (excelfile.GetElement(i, 1) != null)
+            while (excelfile.GetElement(i, 1) != "")
             {
                 var r = new Record("УБИ." + Int32.Parse(excelfile.GetElement(i, 1)), Int32.Parse(excelfile.GetElement(i, 1)), excelfile.GetElement(i, 2), excelfile.GetElement(i, 3), excelfile.GetElement(i, 4),
                     excelfile.GetElement(i, 5), excelfile.GetElement(i, 6) == "1", excelfile.GetElement(i, 7) == "1", excelfile.GetElement(i, 8) == "1",
-                    DateTime.Parse(excelfile.GetElement(i, 9)), DateTime.Parse(excelfile.GetElement(i, 10)));
+                    DateTime.FromOADate(Convert.ToDouble(excelfile.GetElement(i, 9))), DateTime.FromOADate(Convert.ToDouble(excelfile.GetElement(i, 10))));
                 if (r.LastUpdateTime > Properties.Settings.Default.LastUpdate)
                 {
                     counter++;
@@ -75,10 +74,13 @@ namespace Lab02
                 RecordList.Add(r);
                 i++;
             }
-            Properties.Settings.Default.LastUpdate = LastUpdate;
-            Properties.Settings.Default.Save();
+            if (LastUpdate != DateTime.MinValue)
+            {
+                Properties.Settings.Default.LastUpdate = LastUpdate;
+                Properties.Settings.Default.Save();
+            }
             LastInGrid = 15;
-            excelfile.Close();
+            excelfile.Dispose();
             return counter;
         }
 
@@ -88,7 +90,7 @@ namespace Lab02
             {
                 wc.DownloadFile(new Uri(Properties.Settings.Default.Link), "temp.xlsx");
                 var result = MessageBox.Show($"Загрузка завершена, количество обновленных записей {UpdateDataGrid(new ExcelFile($@"{System.IO.Directory.GetCurrentDirectory()}\temp.xlsx", 1))}. Хотите получить подробный отчет?", "Информация об обновлении", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes) 
+                if (result == MessageBoxResult.Yes)
                 {
                     ShowUpdateWindow();
                 }
@@ -112,7 +114,7 @@ namespace Lab02
             if (LastInGrid > RecordList.Count()) return;
             InfoGrid.Items.Clear();
             int i = 0;
-            for (i = LastInGrid; i<= LastInGrid + 14; i++)
+            for (i = LastInGrid; i <= LastInGrid + 14; i++)
             {
                 try
                 {

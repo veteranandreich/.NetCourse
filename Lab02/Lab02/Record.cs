@@ -42,7 +42,7 @@ namespace Lab02
         {
             return $"ID: {this.Id} \n Наименование: {this.Name} \n Описание: {this.Description} \n Источник угрозы: {this.Source} \n" +
                 $"Объект войздействия: {this.Object} \n Угроза конфиденциальности: {this.ConfidentialityThreat} \n Угроза целостности: {this.IntegrityThreat} \n" +
-                $"Угроза доступа: {this.AccessThreat} \n Время включения: {this.IncludingTime} \n Последнее обновление: {this.LastUpdateTime.Date.ToString("dd/MM/yyyy")}";
+                $"Угроза доступа: {this.AccessThreat} \n Время включения: {this.IncludingTime.Date.ToString("dd/MM/yyyy")} \n Последнее обновление: {this.LastUpdateTime.Date.ToString("dd/MM/yyyy")}";
         }
     }
 }

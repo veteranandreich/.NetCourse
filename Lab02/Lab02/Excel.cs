@@ -1,32 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Excel = Microsoft.Office.Interop.Excel;
+using System.IO;
+using OfficeOpenXml;
 
 namespace Lab02
 {
     class ExcelFile
     {
-        private Excel.Worksheet ws;
-        private Excel.Workbook wb;
-        private Excel.Application excel;
+        ExcelPackage excelfile = null;
+        ExcelWorksheet ws = null;
         public ExcelFile(string path, int sheet)
         {
-            this.excel = new Microsoft.Office.Interop.Excel.Application();
-            this.wb = excel.Workbooks.Open(path);
-            this.ws= wb.Worksheets[sheet];
+            excelfile = new ExcelPackage(new FileInfo(path));
+            ws = excelfile.Workbook.Worksheets[sheet];
         }
         public string GetElement (int row, int column)
         {
-            return Convert.ToString(ws.Cells[row, column].value);
+            return Convert.ToString(ws.Cells[row, column].Value);
         }
-        public void Close()
+        public void Dispose()
         {
-            wb.Close();
-            excel.Quit();
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(excel);
+            excelfile.Dispose();
         }
     }
 }
