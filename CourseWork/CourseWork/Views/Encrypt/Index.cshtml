@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@using (Html.BeginForm("EncryptFile", "Encrypt", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="File" value="Ваш файл .txt или .docx">
+    <input type="text" value="NameOfFile" name="Name" />
+    <input type="text" value="Key" name="Key" />
+    <input type="submit" value="Загрузить" name="Button" />
+}
+
