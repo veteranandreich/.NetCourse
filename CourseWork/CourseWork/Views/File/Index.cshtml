@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@using (Html.BeginForm("FileHandler", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <label for="File">Ваш .txt или .docx файл</label> <br/>
+    <input type="file" name="File" value="Attach"><br />
+    <label for="NameOfFile">Имя получаемого файла (если загружаете)</label> <br/>
+    <input type="text" name="Name" /> <br />
+     <label for="Key">Ключ</label> <br />
+    <input type="text" name="Key"/> <br />
+    <label for="EncryptOrDecrypt">Зашифровать(если кнопка активна)</label><br />
+    <p><input name="EncryptOrDecrypt" type="radio" value="Encrypt"> Зашифровать</p>
+    <p><input name="EncryptOrDecrypt" type="radio" value="Decrypt"> Расшифровать</p>
+    <label for="Dowload">Загрузить файл</label>
+    <input name="Download" type="checkbox" value="true" checked> <br />
+    <input type="submit" value="Отправить" name="Button" />
+}
+

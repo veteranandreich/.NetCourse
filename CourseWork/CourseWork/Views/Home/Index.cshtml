@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "HomePage";
+}
+
+@using (Html.BeginForm("TextHandler", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <label for="text">Ваш текст</label><br />
+    <textarea name="text"></textarea><br />
+    <label for="Key">Ключ</label><br />
+    <input name="Key" type="text" /><br />
+    <label for="Name">Имя загружаемого файла</label><br />
+    <input name="Name" type="text" /><br />
+    <p><input name="EncryptOrDecrypt" type="radio" value="Encrypt"> Зашифровать</p>
+    <p><input name="EncryptOrDecrypt" type="radio" value="Decrypt"> Расшифровать</p>
+    <label for="Dowload">Загрузить файл</label>
+    <input name="Download" type="checkbox" value="true" checked>
+    <br />
+    <input type="submit" value="Отправить" name="Button" />
+    <br />
+    @Html.ActionLink("Загрузить текст файлом", "Index", "File");
+}
+

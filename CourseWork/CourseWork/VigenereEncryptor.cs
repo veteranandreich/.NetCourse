@@ -41,10 +41,10 @@ namespace CourseWork
             return EncryptedText;
         }
 
-        public static string Decrypt(string text, string key)
+        public static string Decrypt(string text, string key, int offset, out int step)
         {
             string DecryptedText = "";
-            int i = 0;
+            int i = offset;
             foreach (char c in text)
             {
                 if (Alphabet.Contains(c))
@@ -70,6 +70,7 @@ namespace CourseWork
                     else DecryptedText += c;
                 }
             }
+            step = i;
             return DecryptedText;
         }
     }

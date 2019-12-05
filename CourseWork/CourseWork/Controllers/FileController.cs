@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CourseWork.Controllers
 {
-    public class EncryptController : Controller
+    public class FileController : Controller
     {
         public ActionResult Index()
         {
@@ -17,11 +17,13 @@ namespace CourseWork.Controllers
         }
 
         [HttpPost]
-        public ActionResult EncryptFile(IFormFile file, string name, string key)
+        public ActionResult FileHandler(IFormFile file, string name, string key, string EncryptOrDecrypt, string download)
         {
             if (file != null)
             {
                 var extension = Path.GetExtension(file.FileName);
+                string ResponseText = "";
+                Console.WriteLine(download);
                 if (extension == ".txt")
                 {
                     string text = "";
@@ -29,8 +31,12 @@ namespace CourseWork.Controllers
                     {
                         text = reader.ReadToEnd();
                     }
-                    string EncryptedText =  VigenereEncryptor.Encrypt(text, key, 0, out int _);
-                    return File(Encoding.UTF8.GetBytes(EncryptedText), "text/plain", name);
+                    if (EncryptOrDecrypt == "Encrypt") ResponseText = VigenereEncryptor.Encrypt(text, key, 0, out int _);
+                    if (EncryptOrDecrypt == "Decrypt") ResponseText = VigenereEncryptor.Decrypt(text, key, 0, out int _);
+                    if ((name.Length < 4) || (name.Substring(name.Length - 4) != ".txt")) name += ".txt";
+                    if (download == "true") return File(Encoding.UTF8.GetBytes(ResponseText), "text/plain", name);
+                    ViewBag.Text = ResponseText;
+                    return View();
                 }
                 if (extension == ".docx")
                 {
@@ -41,16 +47,17 @@ namespace CourseWork.Controllers
                         {
                             stream.CopyTo(ms);
                             var doc = new WordDocument(ms);
-                            doc.Encrypt(key);
-                            doc.Save();
+                            if (EncryptOrDecrypt == "Encrypt") doc.EncryptDecrypt(key, true);
+                            if (EncryptOrDecrypt == "Decrypt") doc.EncryptDecrypt(key, false);
                             doc.Dispose();
                             BytesResponse = ms.ToArray();
                         }
+                        if ((name.Length<5)||(name.Substring(name.Length - 5) != ".docx")) name += ".docx";
                         return File(BytesResponse, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", name);
                     }
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "File");
         }
     }
 }

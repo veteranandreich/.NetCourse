@@ -21,7 +21,7 @@ namespace CourseWork
             doc = WordprocessingDocument.Open(stream, true);
         }
         
-        public void Encrypt(string key)
+        public void EncryptDecrypt(string key, bool Encrypt)
         {
             Body body = doc.MainDocumentPart.Document.Body;
             var ps = body.ChildElements;
@@ -35,7 +35,7 @@ namespace CourseWork
                     if (item1.GetFirstChild<Text>() != null)
                     {
                         Text text = item1.GetFirstChild<Text>();
-                        text.Text = VigenereEncryptor.Encrypt(text.Text, key, offset, out step);
+                        text.Text = Encrypt? VigenereEncryptor.Encrypt(text.Text, key, offset, out step): VigenereEncryptor.Decrypt(text.Text, key, offset, out step);
                         offset = step;
                     }
                 }
