@@ -22,6 +22,7 @@ namespace CourseWork.Controllers
             if (file != null)
             {
                 var extension = Path.GetExtension(file.FileName);
+                if ((key == "") || (key == null)) key = "a";
                 string ResponseText = "";
                 Console.WriteLine(download);
                 if (extension == ".txt")
@@ -52,7 +53,8 @@ namespace CourseWork.Controllers
                             doc.Dispose();
                             BytesResponse = ms.ToArray();
                         }
-                        if ((name.Length<5)||(name.Substring(name.Length - 5) != ".docx")) name += ".docx";
+                        if ((name == "") || (name == null)) name = "solution.docx";
+                        else if ((name.Length<5)||(name.Substring(name.Length - 5) != ".docx")) name += ".docx";
                         return File(BytesResponse, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", name);
                     }
                 }
