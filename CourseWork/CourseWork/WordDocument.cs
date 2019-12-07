@@ -11,11 +11,6 @@ namespace CourseWork
     public class WordDocument: IDisposable
     {
         WordprocessingDocument doc;
-        public WordDocument(string path)
-        {
-            doc = WordprocessingDocument.Open(path, true);
-        }
-        
         public WordDocument(Stream stream)
         {
             doc = WordprocessingDocument.Open(stream, true);

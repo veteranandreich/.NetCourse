@@ -14,7 +14,7 @@ namespace CourseWork
             int i = offset;
             foreach (char c in text)
             {
-                if (Alphabet.Contains(c))
+                if ((Alphabet.Contains(c)) && (Alphabet.Contains(Char.ToUpper(key[i]))))
                 {
                     int shift = Alphabet.IndexOf(Char.ToUpper(key[i]));
                     int NewLetter = (Alphabet.IndexOf(c) + shift);
@@ -25,7 +25,7 @@ namespace CourseWork
                 }
                 else
                 {
-                    if (Alphabet.ToLower().Contains(c))
+                    if ((Alphabet.ToLower().Contains(c)) && (Alphabet.Contains(Char.ToUpper(key[i]))))
                     {
                         int shift = Alphabet.IndexOf(Char.ToUpper(key[i]));
                         int NewLetter = (Alphabet.ToLower().IndexOf(c) + shift);

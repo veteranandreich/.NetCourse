@@ -5,7 +5,7 @@
 
 @using (Html.BeginForm("FileHandler", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <label for="File">Ваш .txt или .docx файл</label> <br/>
+    <label for="File">Ваш .txt или .docx файл (Только UTF-8 кодировка для .txt)</label> <br/>
     <input type="file" name="File" value="Attach"><br />
     <label for="NameOfFile">Имя получаемого файла (если загружаете)</label> <br/>
     <input type="text" name="Name" /> <br />
