@@ -4,6 +4,8 @@ using Xunit;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Text;
+using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Packaging;
 
 namespace CourseWork.Tests
 {
@@ -35,7 +37,32 @@ namespace CourseWork.Tests
             Assert.IsType<ViewResult>(result);
             Assert.Equal(VigenereEncryptor.Encrypt("Мама мыла раму", "Кто мыл раму", 0, out int _), result?.ViewData["Text"]);
         }
-
-        //public void DocxToDocxHandlerTest()
-    }
+        [Fact]
+        public void DocxToDocxHandlerTest()
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (var doc = WordprocessingDocument.Create(ms, DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
+                {
+                    MainDocumentPart mainPart = doc.AddMainDocumentPart();
+                    mainPart.Document = new Document();
+                    Body body = mainPart.Document.AppendChild(new Body());
+                    Paragraph para = body.AppendChild(new Paragraph());
+                    Run run = para.AppendChild(new Run());
+                    run.AppendChild(new Text("Тестовый текст для тестирования"));
+                }
+                IFormFile file = new FormFile(ms, 0, ms.Length, "TestDocument", "TestDocument.docx");
+                var result = controller.FileHandler(file, "solution", "ааа", "Decrypt", "true") as FileContentResult;
+                byte[] bytes = result.FileContents;
+                using (MemoryStream memoryStream = new MemoryStream(bytes))
+                {
+                    var responsedoc = WordprocessingDocument.Open(memoryStream, false);
+                    Assert.IsType<FileContentResult>(result);
+                    Assert.Equal("solution.docx", result.FileDownloadName);
+                    Assert.Equal("Тестовый текст для тестирования", responsedoc.MainDocumentPart.Document.Body.InnerText);
+                    Assert.Equal(@"application/vnd.openxmlformats-officedocument.wordprocessingml.document", result.ContentType);
+                }
+             }
+         }
+     }
 }
